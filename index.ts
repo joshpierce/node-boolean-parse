@@ -6,7 +6,7 @@ let parseBoolean = (query: string, workingString?: string, prevLength?: number) 
     prevLength = query.length;
 
     //Turn this on to see the string replacement in action
-    console.log(` In Value: ${query}`);
+    //console.log(` In Value: ${query}`);
 
     //If we're currently looking at a parenthesis at the front of the string
     //we know we just need to carry that parenthesis forward.
@@ -41,7 +41,7 @@ let parseBoolean = (query: string, workingString?: string, prevLength?: number) 
     }
 
     //Turn this on to see the string replacement in action
-    console.log(`Out Value: ${workingString}`);
+    //console.log(`Out Value: ${workingString}`);
 
     //If the query doesn't 
     if (query.length == 0) {
@@ -52,7 +52,7 @@ let parseBoolean = (query: string, workingString?: string, prevLength?: number) 
 }
 
 let cleanupWhitespace = (str: string): string => {
-    return str.replace(/[\n\r]+/g, '').replace(/[\t]+/g, '').replace(/\s+/g, ' ');;
+    return str.replace(/[\r\n]+/g, ' ').replace(/[\t]+/g, ' ').replace(/\s+/g, ' ');;
 }
 
 let keywordMapper = (fields: string[], keyword: string) => {
@@ -62,7 +62,11 @@ let keywordMapper = (fields: string[], keyword: string) => {
 //Everything below this line is just operational inputs to drive the above code.
 let operators = [' AND ', ' OR ', ' NOT ', ' AND NOT '];
 let searchFields = ['id', 'desc'];
-let userQuery = ['Mechanic AND Repair AND 747', 'Mechanic AND Repair AND (747 OR 757 OR 767)', '"Airplane Fixer Guy" AND Repair AND (747 OR 757 OR 767)'];
+let userQuery = ['Mechanic or Repair AnD 747', 'Mechanic AND Repair ANd (747 OR 757 OR 767)', '"Airplane Fixer Guy AND Airplane Breaker Guy And Repair" aND (747 Or 757 OR 767)', `"Find 
+
+Bigfoot  ()      AND " OR
+
+fish`];
 
 userQuery.map(x => {
     console.log(`\r\n\r\n\r\nStarting Input\r\n--------------------\r\n${x}`);
