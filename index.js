@@ -6,17 +6,22 @@ var parseBoolean = function (query, workingString, prevLength) {
     //Track our length for error checking above.
     prevLength = query.length;
     //Turn this on to see the string replacement in action
-    //console.log(` In Value: ${query}`);
+    console.log(" In Value: " + query);
     //If we're currently looking at a parenthesis at the front of the string
     //we know we just need to carry that parenthesis forward.
     if (['(', ')'].includes(query.charAt(0))) {
         workingString += query.charAt(0);
         query = query.slice(1);
     }
-    //If we're looking at an operator, we need to pluck out the operator and add it to our query.
-    else if (operators.filter(function (x) { return query.toUpperCase().startsWith(x); }).length > 1) {
-        workingString += query.slice(0, query.slice(1).indexOf(' ') + 2).toUpperCase();
-        query = query.slice(query.slice(1).indexOf(' ') + 2);
+    //If we're looking at an operator (only thing that should start with spaces), we need to pluck out the operator and add it to our query.
+    else if (query.charAt(0) === ' ') {
+        if (operators.filter(function (x) { return query.toUpperCase().startsWith(x); }).length >= 1) {
+            workingString += query.slice(0, query.slice(1).indexOf(' ') + 2).toUpperCase();
+            query = query.slice(query.slice(1).indexOf(' ') + 2);
+        }
+        else {
+            throw 'Error parsing query. Keyword with spaces not wrapped in quotes.';
+        }
     }
     //If we're not looking at a parenthesis or an operator, we're looking at a keyword, and we need to extract
     //that key word (including keywords encapsulated in quotes) and add it to our search string.
@@ -37,7 +42,7 @@ var parseBoolean = function (query, workingString, prevLength) {
         }
     }
     //Turn this on to see the string replacement in action
-    //console.log(`Out Value: ${workingString}`);
+    console.log("Out Value: " + workingString);
     //If the query doesn't 
     if (query.length == 0) {
         return workingString;
